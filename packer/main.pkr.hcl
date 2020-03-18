@@ -16,7 +16,8 @@ variable "image" {
 
 locals {
   # This local does not interpolate properly; submitted https://github.com/hashicorp/packer/issues/8898
-  image_os = "${split(":", var.image)[0]}"
+  image_os  = split(":", var.image)[0]
+  image_tag = split(":", var.image)[1]
 
   shell_environment_vars = {
     centos = []
@@ -57,14 +58,18 @@ build {
     "source.docker.image",
   ]
 
+  provisioner "shell-local" {
+    command = "echo local.image_os=\\\"${local.image_os}\\\" local.image_tag=\\\"${local.image_tag}\\\""
+  }
+
   provisioner "shell" {
-    inline           = local.shell_inline[split(":", var.image)[0]]
-    environment_vars = local.shell_environment_vars[split(":", var.image)[0]]
+    inline           = local.shell_inline[local.image_os]
+    environment_vars = local.shell_environment_vars[local.image_os]
   }
 
   post-processor "docker-tag" {
-    repository = "${var.docker_hub_username}/${split(":", var.image)[0]}-nginx"
-    tag        = [split(":", var.image)[1]]
+    repository = "${var.docker_hub_username}/${local.image_os}-nginx"
+    tag        = [local.image_tag]
   }
 
   post-processor "docker-push" {
@@ -74,7 +79,7 @@ build {
   }
 
   post-processor "docker-tag" {
-    repository = "homework/nginx-${split(":", var.image)[0]}"
-    tag        = [split(":", var.image)[1]]
+    repository = "homework/nginx-${local.image_os}"
+    tag        = [local.image_tag]
   }
 }
