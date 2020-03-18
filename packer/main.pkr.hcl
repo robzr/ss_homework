@@ -63,7 +63,7 @@ build {
   }
 
   post-processor "docker-tag" {
-    repository = "${var.docker_hub_username}/nginx-${split(":", var.image)[0]}"
+    repository = "${var.docker_hub_username}/${split(":", var.image)[0]}-nginx"
     tag        = [split(":", var.image)[1]]
   }
 
@@ -74,7 +74,7 @@ build {
   }
 
   post-processor "docker-tag" {
-    repository = "homework/${split(":", var.image)[0]}-nginx"
+    repository = "homework/nginx-${split(":", var.image)[0]}"
     tag        = [split(":", var.image)[1]]
   }
 }

@@ -24,7 +24,7 @@ mkdir -p /tmp/test_html ; echo "hello world" > /tmp/test_html/index.html
 docker run -v /tmp/test_html:/html -p 8888:80 homework/nginx-centos:latest
 docker run -v /tmp/test_html:/html -p 8888:80 homework/nginx-ubuntu:latest
 docker run -v /tmp/test_html:/html -p 8888:80 robzr/centos-nginx
-docker run -v /tmp/test_html:/html -p 8888:80 robzr/ubunty-nginx
+docker run -v /tmp/test_html:/html -p 8888:80 robzr/ubuntu-nginx
 ```
 
 ## Caveats
