@@ -15,10 +15,7 @@ variable "image" {
 
 
 locals {
-  /* Packer will always interpolate the following based on var.image default value...
-   * this is either a bug, or an unintuitive ordering of locals vs variables interpolation
-   * either way, bummer, as we cannot reuse this snippet
-   */
+  # This local does not interpolate properly; submitted https://github.com/hashicorp/packer/issues/8898
   image_os = "${split(":", var.image)[0]}"
 
   shell_environment_vars = {
@@ -47,9 +44,8 @@ locals {
 
 source "docker" "image" {
   changes = [
-#    "CMD [\"/usr/sbin/nginx\", \"-g\", \"daemon off;\"]",
-    "CMD [\"/usr/sbin/nginx\"]",
-    "USER www-data",   // this needs to be set for CentOS
+    "CMD [\"-g\", \"daemon off;\"]",
+    "ENTRYPOINT [\"/usr/sbin/nginx\"]",
   ]
   commit = true
   image  = var.image
@@ -61,26 +57,24 @@ build {
     "source.docker.image",
   ]
 
-  provisioner "shell-local" {
-    command = "echo Building on `hostname`, image=${var.image} local.image_os=${local.image_os} image_os=${split(":", var.image)[0]}"
-  }
-
   provisioner "shell" {
     inline           = local.shell_inline[split(":", var.image)[0]]
     environment_vars = local.shell_environment_vars[split(":", var.image)[0]]
   }
 
   post-processor "docker-tag" {
-    repository = "homework/nginx-${split(":", var.image)[0]}"
+    repository = "${var.docker_hub_username}/nginx-${split(":", var.image)[0]}"
     tag        = [split(":", var.image)[1]]
   }
 
-/*
   post-processor "docker-push" {
-    repository     = "robzr/ss_homework"
+    login          = true
     login_username = var.docker_hub_username
     login_password = var.docker_hub_password
-    tag            = [split(":", var.image)[1]]
   }
-*/
+
+  post-processor "docker-tag" {
+    repository = "homework/${split(":", var.image)[0]}-nginx"
+    tag        = [split(":", var.image)[1]]
+  }
 }
