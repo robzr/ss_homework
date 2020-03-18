@@ -15,8 +15,8 @@ Basic nginx container running on Ubuntu or CentOS
 Built with:
 ```
 read -s -p "Enter docker hub password: " docker_hub_password
-packer build -var "docker_hub_password=\"${docker_hub_password}\"" -var "image=\"centos:latest\"" .
-packer build -var "docker_hub_password=\"${docker_hub_password}\"" -var "image=\"ubuntu:latest\"" .
+packer build -var "docker_hub_password=\"${docker_hub_password}\"" -var "image=\"centos:latest\"" packer
+packer build -var "docker_hub_password=\"${docker_hub_password}\"" -var "image=\"ubuntu:latest\"" packer
 ```
 
 Images tested with:
