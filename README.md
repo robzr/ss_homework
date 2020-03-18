@@ -31,3 +31,8 @@ docker run -v /tmp/test_html:/html -p 8888:80 robzr/ubuntu-nginx
 - Packer HCL2 support appears to be immature, and JSON would probably be a better choice for production use
 - Depending on usage, the choice to modify distro nginx configs rather than supplying user configs may be sub-optimal
 - For security, a dedicated config, non-privileged port, and running as non-root would be preferable
+
+## Branches
+- robzr/packer\_bug - Simplified Packer template demonstrating bug
+- robzr/testing\_nightly\_build - Updated version of template that *should* work with fixed Packer
+
