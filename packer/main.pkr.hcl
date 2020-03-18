@@ -1,5 +1,4 @@
 variable "test" {
-  default = "default"
 }
 
 locals {
