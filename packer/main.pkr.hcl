@@ -1,4 +1,5 @@
 variable "test" {
+  default = "default value"
 }
 
 locals {
@@ -13,6 +14,6 @@ build {
   sources = ["source.null.null"]
 
   provisioner "shell-local" {
-    command = "echo var.test=\"${var.test}\" local.test=\"${local.test}\""
+    command = "echo var.test=\\\"${var.test}\\\" local.test=\\\"${local.test}\\\""
   }
 }
