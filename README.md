@@ -36,3 +36,11 @@ docker run -v /tmp/test_html:/html -p 8888:80 robzr/ubuntu-nginx
 - robzr/packer\_bug - Simplified Packer template demonstrating bug
 - robzr/testing\_nightly\_build - Updated version of template that *should* work with fixed Packer
 
+## robzr/testing\_nightly\_build for use with Packer v1.5.5 (pre-release)
+The upcoming Packer v1.5.5 will fix the local ref issue, as well as change the variable quoting behavior.
+When using with v1.5.5 (or current nightly build), the following var syntax is used to build:
+```
+read -s -p "Enter docker hub password: " docker_hub_password
+packer build -var "docker_hub_password=${docker_hub_password}" -var "image=centos:latest" packer
+packer build -var "docker_hub_password=${docker_hub_password}" -var "image=ubuntu:latest" packer
+```
